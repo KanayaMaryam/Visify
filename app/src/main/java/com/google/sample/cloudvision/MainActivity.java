@@ -79,6 +79,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView mImageDetails;
     private ImageView mMainImage;
 
+    private static boolean two_players = false;
+    private static double score1 = 0;
+    private static double score2 = 0;
+    private static int player_number = 1;
+    private static Bitmap btmp1;
+    private static Bitmap btmp2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,13 +99,29 @@ public class MainActivity extends AppCompatActivity {
         TextView objecttodraw = findViewById(R.id.object);
         objecttodraw.setText(object);
 
+        ImageButton scoreboardButton = findViewById(R.id.scoreboardButton);
+        scoreboardButton.setVisibility(View.GONE);
+
         ImageButton fab = findViewById(R.id.fab);
         (fab).setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder
-                    .setMessage(R.string.dialog_select_prompt)
+                    .setMessage("Choose a picture for player 1")
                     .setPositiveButton(R.string.dialog_select_gallery, (dialog, which) -> startGalleryChooser())
                     .setNegativeButton(R.string.dialog_select_camera, (dialog, which) -> startCamera());
+            builder.create().show();
+            player_number= 1;
+        });
+
+        ImageButton fab2 = findViewById(R.id.fab2);
+        (fab2).setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder
+                    .setMessage("Choose a picture for player 2")
+                    .setPositiveButton(R.string.dialog_select_gallery, (dialog, which) -> startGalleryChooser())
+                    .setNegativeButton(R.string.dialog_select_camera, (dialog, which) -> startCamera());
+            two_players = true;
+            player_number = 2;
             builder.create().show();
         });
 
@@ -140,6 +163,14 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         ImageButton fab = findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
+
+        ImageButton scoreboardButton = findViewById(R.id.scoreboardButton);
+        scoreboardButton.setVisibility(View.VISIBLE);
+
+        if(two_players){
+            ImageButton fab2 = findViewById(R.id.fab2);
+            fab2.setVisibility(View.GONE);
+        }
         TextView objecttodraw = findViewById(R.id.object);
         objecttodraw.setVisibility(View.GONE);
         TextView ready = findViewById(R.id.textView2);
@@ -175,9 +206,12 @@ public class MainActivity extends AppCompatActivity {
         if (uri != null) {
             try {
                 // scale the image to save on bandwidth
+                Bitmap btmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                if(player_number==1) btmp1 = btmp;
+                if(player_number==2) btmp2 = btmp;
                 Bitmap bitmap =
                         scaleBitmapDown(
-                                MediaStore.Images.Media.getBitmap(getContentResolver(), uri),
+                                btmp,
                                 MAX_DIMENSION);
 
                 callCloudVision(bitmap);
@@ -337,17 +371,25 @@ public class MainActivity extends AppCompatActivity {
 
         List<EntityAnnotation> labels = response.getResponses().get(0).getLabelAnnotations();
         boolean hasobject = false;
+        double score = 0;
         if (labels != null) {
             for (EntityAnnotation label : labels) {
                 if(label.getDescription().equals(obj)){
                     message.append(String.format(Locale.US, "%.3f: %s", label.getScore(), label.getDescription()));
                     message.append("\n");
+                    score = label.getScore();
                     hasobject = true;
                 }
             }
         }
         if(!hasobject){
             message.append("I didn't recognize your image! :<");
+        }
+
+        if(player_number==1){
+            score1 += score;
+        } else {
+            score2 += score;
         }
 
         return message.toString();
