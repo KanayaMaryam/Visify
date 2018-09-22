@@ -29,11 +29,15 @@
     <ImageButton
         android:id="@+id/fab"
         android:layout_width="180dp"
-        android:layout_height="72dp"
+        android:layout_height="65dp"
         android:layout_gravity="bottom|left"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
         android:adjustViewBounds="true"
         android:cropToPadding="false"
+        android:padding="0dp"
         android:scaleType="fitCenter"
+        android:translationX="0dp"
         app:srcCompat="@drawable/play1"
         tools:background="#00000000" />
 
@@ -41,36 +45,48 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="261dp"
+        android:fontFamily="@font/ritalic"
         android:gravity="center"
         android:includeFontPadding="false"
         android:text="Your word is"
         android:textSize="30sp" />
-    
+
     <TextView
         android:id="@+id/txtvwTimer"
         android:layout_width="match_parent"
         android:layout_height="800dp"
         android:gravity="center"
         android:includeFontPadding="false"
+        android:paddingBottom="0dp"
+        android:paddingEnd="0dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:paddingStart="0dp"
+        android:paddingTop="0dp"
         android:text=""
         android:textSize="30sp" />
 
     <ImageButton
         android:id="@+id/fab2"
         android:layout_width="180dp"
-        android:layout_height="72dp"
+        android:layout_height="66dp"
         android:layout_gravity="bottom|right"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
         android:adjustViewBounds="true"
-        android:cropToPadding="false"
+        android:cropToPadding="true"
         android:scaleType="fitCenter"
+        android:translationX="0dp"
         app:srcCompat="@drawable/play2"
         tools:background="#00000000" />
 
     <ImageButton
         android:id="@+id/scoreboardButton"
         android:layout_width="180dp"
-        android:layout_height="72dp"
+        android:layout_height="35dp"
         android:layout_gravity="bottom|left"
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="10dp"
         android:adjustViewBounds="true"
         android:cropToPadding="false"
         android:onClick="scoreboardClick"

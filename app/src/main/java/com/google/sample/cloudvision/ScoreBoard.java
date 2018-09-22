@@ -3,6 +3,7 @@ package com.google.sample.cloudvision;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +21,7 @@ public class ScoreBoard extends AppCompatActivity  {
     private ImageView image1;
     private ImageView image2;
     private ImageView trophy;
+    private ImageView trophy2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,14 @@ public class ScoreBoard extends AppCompatActivity  {
         image1 = findViewById(R.id.p1image);
         image2 = findViewById(R.id.p2image);
         trophy = findViewById(R.id.trophyImage);
+        trophy2 = findViewById(R.id.trophyImage2);
+
+        //setActionBar(View.INVISIBLE);
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.hide();
+        }
 
         setImage(MainActivity.getBtmp1(), MainActivity.getBtmp2());
         setScore(MainActivity.getScore1(), MainActivity.getScore2());
@@ -64,13 +74,12 @@ public class ScoreBoard extends AppCompatActivity  {
         score1.setText(s1 + "%");
         score2.setText(s2 + "%");
 
-        trophy.setVisibility(View.VISIBLE);
+        trophy.setVisibility(View.INVISIBLE);
+        trophy2.setVisibility(View.INVISIBLE);
         if (p1 > p2) {
-            trophy.setTop(100);
+            trophy.setVisibility(View.VISIBLE);
         } else if (p2 > p1) {
-            trophy.setTop(550);
-        } else {
-            trophy.setVisibility(ImageView.INVISIBLE);
+            trophy2.setVisibility(View.VISIBLE);
         }
 
     }
