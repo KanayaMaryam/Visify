@@ -10,4 +10,8 @@
     <string name="dialog_select_gallery">Gallery</string>
 
     <string name="image_picker_error">Something is wrong with that image. Pick a different one please.</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

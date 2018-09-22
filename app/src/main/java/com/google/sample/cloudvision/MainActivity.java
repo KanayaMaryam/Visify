@@ -31,6 +31,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,6 +59,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String FILE_NAME = "temp.jpg";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
     private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
-    private static final int MAX_LABEL_RESULTS = 10;
+    private static final int MAX_LABEL_RESULTS = 100;
     private static final int MAX_DIMENSION = 1200;
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -82,9 +85,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        String[] dict = {"horse", "chair", "table", "cat", "bottle", "banana", "dog", "donut", "car"};
+        Random ran = new Random();
+        int x = ran.nextInt(10);
+        String object = dict[x];
+        TextView objecttodraw = findViewById(R.id.object);
+        objecttodraw.setText(object);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
+        ImageButton fab = findViewById(R.id.fab);
+        (fab).setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder
                     .setMessage(R.string.dialog_select_prompt)
@@ -129,6 +138,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        ImageButton fab = findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
+        TextView objecttodraw = findViewById(R.id.object);
+        objecttodraw.setVisibility(View.GONE);
+        TextView ready = findViewById(R.id.textView2);
+        ready.setVisibility(View.GONE);
 
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             uploadImage(data.getData());
@@ -248,10 +263,12 @@ public class MainActivity extends AppCompatActivity {
     private static class LableDetectionTask extends AsyncTask<Object, Void, String> {
         private final WeakReference<MainActivity> mActivityWeakReference;
         private Vision.Images.Annotate mRequest;
+        private String object;
 
-        LableDetectionTask(MainActivity activity, Vision.Images.Annotate annotate) {
+        LableDetectionTask(MainActivity activity, Vision.Images.Annotate annotate, String obj) {
             mActivityWeakReference = new WeakReference<>(activity);
             mRequest = annotate;
+            object = obj;
         }
 
         @Override
@@ -259,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Log.d(TAG, "created Cloud Vision request object, sending request");
                 BatchAnnotateImagesResponse response = mRequest.execute();
-                return convertResponseToString(response);
+                return convertResponseToString(response, object);
 
             } catch (GoogleJsonResponseException e) {
                 Log.d(TAG, "failed to make API request because " + e.getContent());
@@ -285,7 +302,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Do the real work in an async task, because we need to use the network anyway
         try {
-            AsyncTask<Object, Void, String> labelDetectionTask = new LableDetectionTask(this, prepareAnnotationRequest(bitmap));
+            TextView object = findViewById(R.id.object);
+            String obj = object.getText().toString();
+            AsyncTask<Object, Void, String> labelDetectionTask = new LableDetectionTask(this, prepareAnnotationRequest(bitmap), obj);
             labelDetectionTask.execute();
         } catch (IOException e) {
             Log.d(TAG, "failed to make API request because of other IOException " +
@@ -313,17 +332,22 @@ public class MainActivity extends AppCompatActivity {
         return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
     }
 
-    private static String convertResponseToString(BatchAnnotateImagesResponse response) {
+    private static String convertResponseToString(BatchAnnotateImagesResponse response, String obj) {
         StringBuilder message = new StringBuilder("I found these things:\n\n");
 
         List<EntityAnnotation> labels = response.getResponses().get(0).getLabelAnnotations();
+        boolean hasobject = false;
         if (labels != null) {
             for (EntityAnnotation label : labels) {
-                message.append(String.format(Locale.US, "%.3f: %s", label.getScore(), label.getDescription()));
-                message.append("\n");
+                if(label.getDescription().equals(obj)){
+                    message.append(String.format(Locale.US, "%.3f: %s", label.getScore(), label.getDescription()));
+                    message.append("\n");
+                    hasobject = true;
+                }
             }
-        } else {
-            message.append("nothing");
+        }
+        if(!hasobject){
+            message.append("I didn't recognize your image! :<");
         }
 
         return message.toString();
