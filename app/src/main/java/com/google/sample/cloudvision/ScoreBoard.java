@@ -20,7 +20,6 @@ public class ScoreBoard extends AppCompatActivity  {
     private ImageView image1;
     private ImageView image2;
     private ImageView trophy;
-    private ImageButton returnButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +48,7 @@ public class ScoreBoard extends AppCompatActivity  {
         Intent i = new Intent(this, FullscreenActivity.class);
         startActivity(i);
     }
+    
     public void setImage(Bitmap bitmap1, Bitmap bitmap2){
         image1.setVisibility(View.VISIBLE);
         image2.setVisibility(View.VISIBLE);
