@@ -43,7 +43,16 @@
         android:layout_height="261dp"
         android:gravity="center"
         android:includeFontPadding="false"
-        android:text="Get ready ... your word is"
+        android:text="Your word is"
+        android:textSize="30sp" />
+    
+    <TextView
+        android:id="@+id/txtvwTimer"
+        android:layout_width="match_parent"
+        android:layout_height="800dp"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text=""
         android:textSize="30sp" />
 
     <ImageButton
