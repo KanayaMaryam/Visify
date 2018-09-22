@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,11 +24,7 @@ public class ScoreBoard extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scoreboard_activity);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        TextView objecttodraw = findViewById(R.id.object);
-        objecttodraw.setText("Hello");
 
         score1 = findViewById(R.id.p1score);
         score2 = findViewById(R.id.p2score);
@@ -35,21 +32,31 @@ public class ScoreBoard extends AppCompatActivity  {
         image1 = findViewById(R.id.p1image);
         image2 = findViewById(R.id.p2image);
         trophy = findViewById(R.id.trophyImage);
+
+        setImage(MainActivity.getBtmp1(), MainActivity.getBtmp2());
+        setScore(MainActivity.getScore1(), MainActivity.getScore2());
     }
 
     public void setImage(Bitmap bitmap1, Bitmap bitmap2){
-        image1.setImageBitmap(bitmap1);
-        image2.setImageBitmap(bitmap2);
+        image1.setVisibility(View.VISIBLE);
+        image2.setVisibility(View.VISIBLE);
+
+
+        image1.setImageBitmap(Bitmap.createScaledBitmap(bitmap1, 400, 600, false));
+        image2.setImageBitmap(Bitmap.createScaledBitmap(bitmap2, 400, 600, false));
     }
 
     public void setScore(double p1, double p2) {
-        score1.setText(Double.toString(p1));
-        score2.setText(Double.toString(p2));
+        int s1 = (int)(p1 * 100);
+        int s2 = (int)(p2 * 100);
+        score1.setText(s1 + "%");
+        score2.setText(s2 + "%");
 
+        trophy.setVisibility(View.VISIBLE);
         if (p1 > p2) {
-            trophy.setTranslationY(0);
+            trophy.setTop(100);
         } else if (p2 > p1) {
-            trophy.setTranslationY(300);
+            trophy.setTop(550);
         } else {
             trophy.setVisibility(ImageView.INVISIBLE);
         }

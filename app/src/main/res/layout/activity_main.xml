@@ -73,6 +73,7 @@
         android:layout_gravity="bottom|left"
         android:adjustViewBounds="true"
         android:cropToPadding="false"
+        android:onClick="scoreboardClick"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/scoreboard"
         tools:background="#00000000" />
