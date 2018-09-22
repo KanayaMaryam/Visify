@@ -5,20 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/backgrounf"
-    tools:background="@drawable/backgrounf"
-    >
+    android:windowActionBar="false"
+    tools:background="@drawable/backgrounf">
 
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/p2image"
         android:layout_alignStart="@+id/textView4"
-        android:layout_marginBottom="281dp"
+        android:fontFamily="@font/ralewaym"
+        android:gravity="center_vertical"
         android:text="@string/player_two"
-        android:textSize="24sp"
-        />
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/textView4"
@@ -28,6 +28,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="17dp"
         android:layout_marginTop="28dp"
+        android:fontFamily="@font/ralewaym"
         android:text="Player One:"
         android:textSize="24sp" />
 
@@ -56,7 +57,8 @@
         android:layout_alignTop="@+id/textView4"
         android:layout_centerHorizontal="true"
         android:text="[Score]"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/p2score"
@@ -64,8 +66,11 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/p1score"
         android:layout_alignTop="@+id/textView3"
+        android:layout_marginBottom="0dp"
+        android:gravity="center_vertical"
         android:text="[Score]"
-        android:textSize="24sp"/>
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/trophyImage"
@@ -94,8 +99,11 @@
         android:id="@+id/returnButton"
         android:layout_width="160dp"
         android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="bottom"
         android:adjustViewBounds="true"
+        android:background="#00000000"
         android:cropToPadding="false"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/playagain" />
