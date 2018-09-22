@@ -85,6 +85,10 @@ public class MainActivity extends AppCompatActivity {
     private static int player_number = 1;
     private static Bitmap btmp1;
     private static Bitmap btmp2;
+    
+    private TextView countdown;
+    private CountDownTimer cdt;
+    public long timeleft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
         String object = dict[x];
         TextView objecttodraw = findViewById(R.id.object);
         objecttodraw.setText(object);
+
+        performCountdown();
 
         ImageButton scoreboardButton = findViewById(R.id.scoreboardButton);
         scoreboardButton.setVisibility(View.GONE);
@@ -393,5 +399,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return message.toString();
+    }
+    
+    private void performCountdown() {
+        countdown = findViewById(R.id.txtvwTimer);
+        timeleft = 12000;
+        cdt = new CountDownTimer(timeleft, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timeleft = millisUntilFinished;
+                countdown.setText(timeleft / 1000 - 1 + " seconds remaining");
+
+                if(countdown.getText().toString().equals("0 seconds reamining"))
+                {
+                    countdown.setText("Time's Over");
+                }
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
     }
 }
