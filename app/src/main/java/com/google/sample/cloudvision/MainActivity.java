@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                     .setNegativeButton(R.string.dialog_select_camera, (dialog, which) -> startCamera());
             builder.create().show();
         });
+        fab2.setVisibility(View.GONE);
 
         mImageDetails = findViewById(R.id.image_details);
         mMainImage = findViewById(R.id.main_image);
@@ -195,10 +196,16 @@ public class MainActivity extends AppCompatActivity {
         ImageButton scoreboardButton = findViewById(R.id.scoreboardButton);
         scoreboardButton.setVisibility(View.VISIBLE);
 
+        ImageButton fab2 = findViewById(R.id.fab2);
         if(two_players){
-            ImageButton fab2 = findViewById(R.id.fab2);
             fab2.setVisibility(View.GONE);
+        }else{
+            fab2.setVisibility(View.VISIBLE);
         }
+
+        TextView timer = findViewById(R.id.txtvwTimer);
+        timer.setVisibility(View.GONE);
+
         TextView objecttodraw = findViewById(R.id.object);
         objecttodraw.setVisibility(View.GONE);
         TextView ready = findViewById(R.id.textView2);
@@ -236,11 +243,11 @@ public class MainActivity extends AppCompatActivity {
                 // scale the image to save on bandwidth
                 Bitmap btmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 if(!two_players){
-                    Log.d(TAG, "NOT TWO PLAYERS");
+                    Log.d(TAG, "First player btmp update");
                     btmp1 = Bitmap.createScaledBitmap(btmp, MAX_DIMENSION, MAX_DIMENSION,false);;
                 }
                 else {
-                    Log.d(TAG, "YES TWO PLAYERS");
+                    Log.d(TAG, "Second player btmp update");
                     btmp2 = Bitmap.createScaledBitmap(btmp, MAX_DIMENSION, MAX_DIMENSION,false);;
                 }
                 Bitmap bitmap =
