@@ -79,12 +79,28 @@ public class MainActivity extends AppCompatActivity {
     private TextView mImageDetails;
     private ImageView mMainImage;
 
-    private static boolean two_players = false;
-    private static double score1 = 0;
-    private static double score2 = 0;
-    private static int player_number = 1;
-    private static Bitmap btmp1;
-    private static Bitmap btmp2;
+    public static boolean two_players = false;
+    public static double score1 = 0;
+    public static double score2 = 0;
+    public static int player_number = 1;
+    public static Bitmap btmp1;
+    public static Bitmap btmp2;
+
+    public static double getScore1() {
+        return score1;
+    }
+
+    public static double getScore2() {
+        return score2;
+    }
+
+    public static Bitmap getBtmp1() {
+        return btmp1;
+    }
+
+    public static Bitmap getBtmp2() {
+        return btmp2;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,24 +120,24 @@ public class MainActivity extends AppCompatActivity {
 
         ImageButton fab = findViewById(R.id.fab);
         (fab).setOnClickListener(view -> {
+            player_number= 1;
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder
                     .setMessage("Choose a picture for player 1")
                     .setPositiveButton(R.string.dialog_select_gallery, (dialog, which) -> startGalleryChooser())
                     .setNegativeButton(R.string.dialog_select_camera, (dialog, which) -> startCamera());
             builder.create().show();
-            player_number= 1;
         });
 
         ImageButton fab2 = findViewById(R.id.fab2);
         (fab2).setOnClickListener(view -> {
+            player_number = 2;
+            two_players = true;
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder
                     .setMessage("Choose a picture for player 2")
                     .setPositiveButton(R.string.dialog_select_gallery, (dialog, which) -> startGalleryChooser())
                     .setNegativeButton(R.string.dialog_select_camera, (dialog, which) -> startCamera());
-            two_players = true;
-            player_number = 2;
             builder.create().show();
         });
 
@@ -137,6 +153,11 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(Intent.createChooser(intent, "Select a photo"),
                     GALLERY_IMAGE_REQUEST);
         }
+    }
+
+    public void scoreboardClick(View v) {
+        Intent intent = new Intent(MainActivity.this, ScoreBoard.class);
+        startActivity(intent);
     }
 
     public void startCamera() {
@@ -207,8 +228,14 @@ public class MainActivity extends AppCompatActivity {
             try {
                 // scale the image to save on bandwidth
                 Bitmap btmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                if(player_number==1) btmp1 = btmp;
-                if(player_number==2) btmp2 = btmp;
+                if(!two_players){
+                    Log.d(TAG, "NOT TWO PLAYERS");
+                    btmp1 = Bitmap.createScaledBitmap(btmp, MAX_DIMENSION, MAX_DIMENSION,false);;
+                }
+                else {
+                    Log.d(TAG, "YES TWO PLAYERS");
+                    btmp2 = Bitmap.createScaledBitmap(btmp, MAX_DIMENSION, MAX_DIMENSION,false);;
+                }
                 Bitmap bitmap =
                         scaleBitmapDown(
                                 btmp,
