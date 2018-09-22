@@ -1,5 +1,6 @@
 package com.google.sample.cloudvision;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -19,6 +20,7 @@ public class ScoreBoard extends AppCompatActivity  {
     private ImageView image1;
     private ImageView image2;
     private ImageView trophy;
+    private ImageButton returnButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +37,18 @@ public class ScoreBoard extends AppCompatActivity  {
 
         setImage(MainActivity.getBtmp1(), MainActivity.getBtmp2());
         setScore(MainActivity.getScore1(), MainActivity.getScore2());
+        
+        ImageButton back = findViewById(R.id.returnButton);
+        (back).setOnClickListener(view -> {
+            openHomePage();
+        });
     }
-
+    
+    public void openHomePage()
+    {
+        Intent i = new Intent(this, FullscreenActivity.class);
+        startActivity(i);
+    }
     public void setImage(Bitmap bitmap1, Bitmap bitmap2){
         image1.setVisibility(View.VISIBLE);
         image2.setVisibility(View.VISIBLE);
