@@ -70,4 +70,13 @@
         android:translationY="0dp"
         app:srcCompat="@drawable/trophy" />
 
+    <ImageButton
+        android:id="@+id/returnButton"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/playagain" />
 </RelativeLayout>
