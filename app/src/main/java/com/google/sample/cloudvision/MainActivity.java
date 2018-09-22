@@ -403,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
     
     private void performCountdown() {
         countdown = findViewById(R.id.txtvwTimer);
-        timeleft = 12000;
+        timeleft = 62000;
         cdt = new CountDownTimer(timeleft, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
