@@ -96,4 +96,25 @@
         app:srcCompat="@drawable/scoreboard"
         tools:background="@null" />
 
+    <ImageView
+        android:id="@+id/loadingImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/backgrounf" />
+
+    <TextView
+    android:id="@+id/loadingText"
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    android:gravity="center"
+    android:includeFontPadding="false"
+    android:paddingBottom="0dp"
+    android:paddingEnd="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingStart="0dp"
+    android:paddingTop="0dp"
+    android:text="Loading..."
+    android:textSize="30sp" />
+
 </android.support.design.widget.CoordinatorLayout>

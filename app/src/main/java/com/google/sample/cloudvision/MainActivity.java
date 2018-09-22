@@ -91,6 +91,9 @@ public class MainActivity extends AppCompatActivity {
     private CountDownTimer cdt;
     public long timeleft;
 
+    public static ImageView loading;
+    public static TextView loadingtext;
+
     public static double getScore1() {
         return score1;
     }
@@ -115,12 +118,17 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         String[] dict = {"horse", "chair", "table", "cat", "bottle", "banana", "dog", "donut", "car"};
         Random ran = new Random();
-        int x = ran.nextInt(10);
+        int x = 4;
         String object = dict[x];
         TextView objecttodraw = findViewById(R.id.object);
         objecttodraw.setText(object);
 
         performCountdown();
+
+        loading = findViewById(R.id.loadingImage);
+        loading.setVisibility(View.GONE);
+        loadingtext = findViewById(R.id.loadingText);
+        loadingtext.setVisibility(View.GONE);
 
         ImageButton scoreboardButton = findViewById(R.id.scoreboardButton);
         scoreboardButton.setVisibility(View.GONE);
@@ -335,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
         return annotateRequest;
     }
 
-    private static class LableDetectionTask extends AsyncTask<Object, Void, String> {
+    private class LableDetectionTask extends AsyncTask<Object, Void, String> {
         private final WeakReference<MainActivity> mActivityWeakReference;
         private Vision.Images.Annotate mRequest;
         private String object;
@@ -348,9 +356,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Object... params) {
+            loading.setVisibility(View.VISIBLE);
+            loadingtext.setVisibility(View.VISIBLE);
             try {
                 Log.d(TAG, "created Cloud Vision request object, sending request");
                 BatchAnnotateImagesResponse response = mRequest.execute();
+                runOnUiThread(new Runnable(){
+                    public void run(){
+                        loading.setVisibility(View.GONE);
+                        loadingtext.setVisibility(View.GONE);
+                    }
+                });
                 return convertResponseToString(response, object);
 
             } catch (GoogleJsonResponseException e) {
